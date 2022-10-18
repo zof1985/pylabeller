@@ -1,0 +1,9 @@
+typing_extensions
+pyinstaller
+opencv-python
+pyside2
+pylint
+black
+numpy
+h5py
+six
