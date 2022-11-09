@@ -163,7 +163,7 @@ class Labeller(QWidget):
 
     Parameters
     ----------
-    segmenters: Iterable[Segmenter] | Segmenter | None
+    segmenters: Iterable[Segmenter] | Segmenter | None, optional
         pregenerated segmenters to be included in the Labeller.
 
     **formats: Keyworded arguments
@@ -390,6 +390,28 @@ class Labeller(QWidget):
             vals += [str(self.frames[self.current_frame][coords[::-1]])]
             txt = frm.format(*vals)
             self._data_coords.setText(txt)
+
+    def set_input(self, path:str) -> None:
+        """
+        set the file to be segmented.
+
+        Parameters
+        ----------
+        path : str
+            the path to the file to be automatically loaded once the labeller
+            is opened.
+
+        Raises
+        ------
+        TypeError
+            if path is not a str instance or the string does not match
+            with the path to an existing file.
+        """
+
+        # load the file on path
+        if not isinstance(path, str) or not os.path.exists(path):
+            raise TypeError("path must be an existing file.")
+        self._input_bar._textfield.setText(path)
 
     # ****** GETTERS ****** #
 

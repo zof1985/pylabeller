@@ -168,7 +168,7 @@ class FlatButton(QLabel):
     text: str
         the text to be shown by the button.
 
-    icon: str | None
+    icon: str | QPixmap None
         the name of the icon to be used on this button. The icon is retrieved
         from the "assets" folder of the module.
         If None, no icon is used.
@@ -197,7 +197,7 @@ class FlatButton(QLabel):
     def __init__(
         self,
         text: str | None = None,
-        icon: str | None = None,
+        icon: str | QPixmap | None = None,
         tooltip: str | None = "",
         fun: FunctionType | MethodType | None = None,
         shortcut: str | None = None,
@@ -208,8 +208,8 @@ class FlatButton(QLabel):
         self._clicked = Signal()
 
         # set the input data
-        if icon is not None:
-            if not os.path.exists(icon):
+        if icon is not None and not isinstance(icon, QPixmap):
+            if icon is not None and not os.path.exists(icon):
                 warnings.warn(f"{icon} does not exists.")
         if tooltip is not None:
             self.setToolTip(tooltip)
@@ -227,10 +227,10 @@ class FlatButton(QLabel):
 
     # ****** SETTERS ****** #
 
-    def set_icon(self, icon: str | NDArray | None) -> None:
+    def set_icon(self, icon: str | NDArray | QPixmap | None) -> None:
         """set the label icon as pixmap."""
-        if icon is None:
-            self.setPixmap(None)
+        if icon is None or isinstance(icon, QPixmap):
+            self.setPixmap(icon)
         else:
             check_type(icon, (str, np.ndarray))
             if isinstance(icon, str):
@@ -537,13 +537,13 @@ class SegmenterWidget(QWidget):
         # movement box
         self._upward_button = FlatButton(
             text=None,
-            icon=UPWARD,
+            icon=as_pixmap(UPWARD),
             tooltip="Move up",
             fun=self._on_move_upward,
         )
         self._downward_button = FlatButton(
             text=None,
-            icon=DOWNWARD,
+            icon=as_pixmap(DOWNWARD),
             tooltip="Move down",
             fun=self._on_move_downward,
         )
@@ -570,7 +570,7 @@ class SegmenterWidget(QWidget):
         # delete
         self._delete_button = FlatButton(
             text=None,
-            icon=DELETE,
+            icon=as_pixmap(DELETE),
             tooltip="Remove the Segmenter",
             fun=self._delete_clicked,
         )

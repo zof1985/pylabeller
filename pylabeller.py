@@ -37,18 +37,49 @@ def read_h5(file: str) -> NDArray:
     return images
 
 
+#! RUN
+def run(path:str | None, segmenters:list | None, **formats) -> None:
+    """
+    Open the GUI allowing to interact with the provided labeller and images.
+
+    Parameters
+    ----------
+    path: str | None, optional
+        the path to the file to be automatically loaded once the labeller
+        is opened.
+
+    segmenters: Iterable[Segmenter] | Segmenter | None, optional
+        pregenerated segmenters to be included in the Labeller.
+
+    **formats: Keyworded arguments
+        any number of keyworded arguments. Each should be the name of an
+        extension file format accepted by the labeller. Each key must have
+        an associated Method or Function that allows to extract the frames
+        to be labelled from the selected file.
+    """
+
+    # setup the labeller GUI
+    app = QApplication(sys.argv)
+    labeller = Labeller(segmenters, **formats)
+
+    # show the data
+    labeller.show()
+
+    # add the path
+    if path is not None:
+        labeller.set_input(path)
+
+    # run until closed
+    sys.exit(app.exec_())
+
+
 #! MAIN
 
 
 if __name__ == "__main__":
-    app = QApplication(sys.argv)
-
-    # setup the labeller and the input reading formats
+    path = "sample.h5"
     face = EllipseSegmenter("FACE", (255, 0, 0, 255), 1, 1)
     resp = TriangleSegmenter("RESPIRATION", (0, 255, 0, 255), 1, 1)
+    segmenters = [face, resp]
     formats = {"h5": read_h5}
-    labeller = Labeller([face, resp], **formats)
-
-    # show the data
-    labeller.show()
-    sys.exit(app.exec_())
+    run(path, segmenters, **formats)
