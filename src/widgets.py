@@ -56,7 +56,7 @@ QFONT = QFont("Arial", 12)
 QSIZE = 25
 
 invalid = ["Segmenter", "NDArray", "Signal"]
-segmenters_module = sys.modules["pylabeller.segmenters"]
+segmenters_module = sys.modules["pylabeller.src.segmenters"]
 SEGMENTERS = inspect.getmembers(segmenters_module, inspect.isclass)
 SEGMENTERS = [i for i in SEGMENTERS if i[0] not in invalid]
 
