@@ -70,7 +70,9 @@ def run(path:str | None, segmenters:list | None, **formats) -> None:
         labeller.set_input(path)
 
     # run until closed
-    sys.exit(app.exec_())
+    app.exec_()
+    app.quit()
+    del app
 
 
 #! MAIN
