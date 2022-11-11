@@ -41,5 +41,5 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
-    icon=['C:\\Users\\lzoffoli\\OneDrive - Technogym SPA\\Innovation\\thermography\\validation_study\\pylabeller\\pylabeller\\icon.ico'],
+    icon=['icon.ico'],
 )
